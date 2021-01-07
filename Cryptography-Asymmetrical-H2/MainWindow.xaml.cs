@@ -52,5 +52,11 @@ namespace Cryptography_Asymmetrical_H2
             txt_P.Text = Convert.ToBase64String(pbKey.P);
             txt_Q.Text = Convert.ToBase64String(pbKey.Q);
         }
+
+        //Delete key event
+        private void btn_Decrypt_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            RSA.DeleteKeyInCsp();
+        }
     }
 }

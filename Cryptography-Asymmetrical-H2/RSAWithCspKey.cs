@@ -17,7 +17,7 @@ namespace Cryptography_Asymmetrical_H2
             cspParams.Flags = CspProviderFlags.UseMachineKeyStore;
             cspParams.ProviderName = "Microsoft Strong Cryptographic Provider";
 
-            var rsa = new RSACryptoServiceProvider(cspParams) { PersistKeyInCsp = true };
+            var rsa = new RSACryptoServiceProvider(cspParams) { PersistKeyInCsp = true }; //Puts it in a key container, lies in RAM
         }
 
         public RSAParameters GetKey()
@@ -27,26 +27,15 @@ namespace Cryptography_Asymmetrical_H2
             return rsa.ExportParameters(true);
         }
 
+        /// <summary>
+        /// Deletes the key from RAM
+        /// </summary>
         public void DeleteKeyInCsp()
         {
             var cspParams = new CspParameters { KeyContainerName = containerName };
             var rsa = new RSACryptoServiceProvider(cspParams) { PersistKeyInCsp = false };
 
             rsa.Clear();
-        }
-
-        public byte[] EncryptData(byte[] dataToEncrypt)
-        {
-            byte[] cipherbytes;
-
-            var cspParams = new CspParameters { KeyContainerName = containerName };
-
-            using (var rsa = new RSACryptoServiceProvider(2048, cspParams))
-            {
-                cipherbytes = rsa.Encrypt(dataToEncrypt, false);
-            }
-
-            return cipherbytes;
         }
 
         public byte[] DecryptData(byte[] dataToDecrypt)
